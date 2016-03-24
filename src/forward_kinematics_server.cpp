@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     // Start Matlab engine
     ep_ = engOpen("\0");
     engEvalString(ep_, "cd ~/catkin_ws/src/catheter_prb_model/matlab");  // TODO: Make path finding dynamic
-    engEvalString(ep_, "run('startup.m')");  // TODO: Make path finding dynamic
+    engEvalString(ep_, "run('startup.m')");
 
     // Advertise service
     ros::ServiceServer service = nh.advertiseService("catheter_forward_kinematics", forward_kinematics);

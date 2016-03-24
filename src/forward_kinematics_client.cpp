@@ -10,10 +10,10 @@ int main(int argc, char **argv) {
 
     // Put array in service
     catheter_prb_model::ForwardKinematics srv;
-    int controlSize;  // TODO: For debugging, should be defined somewhere else
-    double current[6] = {1e-3, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3};  // For debugging
+    int controlSize = 6;
+    double current[controlSize] = {1e-3, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3};  // For debugging
 
-    std::copy(current, current+6, std::back_inserter(srv.request.control));
+    std::copy(current, current+controlSize, std::back_inserter(srv.request.control));
 
     if (client.call(srv)) {
         ROS_INFO("Joint angles = ");
