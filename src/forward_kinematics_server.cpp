@@ -17,8 +17,9 @@ bool forward_kinematics(catheter_prb_model::ForwardKinematics::Request &request,
     mxArray *dofMxArray = engGetVariable(ep_, "dof");
     mxArray *jointAnglesMxArray = engGetVariable(ep_, "jointAngles");
     int dof = static_cast<int>(*reinterpret_cast<double*>(mxGetData(dofMxArray)));
+    response.dof = dof;
     response.jointAngles.insert(response.jointAngles.end(), mxGetPr(jointAnglesMxArray), mxGetPr(jointAnglesMxArray) + dof);
-    ROS_INFO("dof = %d", dof);
+    ROS_INFO("dof = %d", response.dof);
     ROS_INFO("jointAngles = ");
 
     for (int i = 0; i < dof; i++) {

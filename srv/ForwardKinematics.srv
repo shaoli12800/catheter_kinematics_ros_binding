@@ -1,3 +1,4 @@
 float64[] control
 ---
 float64[] jointAngles
+int8 dof

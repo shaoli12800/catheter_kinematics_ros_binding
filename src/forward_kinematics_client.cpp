@@ -16,9 +16,8 @@ int main(int argc, char **argv) {
     std::copy(current, current+6, std::back_inserter(srv.request.control));
 
     if (client.call(srv)) {
-        ROS_INFO("Things went okay");
         ROS_INFO("Joint angles = ");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < srv.response.dof; i++) {
             ROS_INFO("%f" , srv.response.jointAngles[i]);
         }
     }
