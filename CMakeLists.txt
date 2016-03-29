@@ -5,7 +5,7 @@ project(catheter_prb_model)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs message_generation)
+find_package(catkin REQUIRED COMPONENTS roscpp roslib rospy std_msgs message_generation)
 find_package(MATLAB REQUIRED)
 
 # If Matlab is not found, raise error and quit

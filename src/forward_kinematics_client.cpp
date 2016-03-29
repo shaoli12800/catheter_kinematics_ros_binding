@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 
     // Put array in service
     catheter_prb_model::ForwardKinematics srv;
-    int controlSize = 6;
+    const int controlSize = 6;
     double current[controlSize] = {1e-3, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3};  // For debugging
 
     std::copy(current, current+controlSize, std::back_inserter(srv.request.control));

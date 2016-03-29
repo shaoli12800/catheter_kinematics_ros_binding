@@ -1,5 +1,6 @@
 
 #include "ros/ros.h"
+#include "ros/package.h"
 #include "engine.h"
 #include "catheter_prb_model/ForwardKinematics.h"
 
@@ -35,7 +36,8 @@ int main(int argc, char **argv) {
 
     // Start Matlab engine
     ep_ = engOpen("\0");
-    engEvalString(ep_, "cd ~/catkin_ws/src/catheter_prb_model/matlab");  // TODO: Make path finding dynamic
+    std::string changeDir = "cd " + ros::package::getPath("catheter_prb_model") + "/matlab";
+    engEvalString(ep_, changeDir.c_str());
     engEvalString(ep_, "run('startup.m')");
 
     // Advertise service
