@@ -1,4 +1,4 @@
-float64[] control
+float32[] currents
 ---
-float64[] jointAngles
+float32[] joint_angles
 int8 dof

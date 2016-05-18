@@ -1,0 +1,4 @@
+float32[] joint_angles
+float32[] currents
+---
+std_msgs/Float32MultiArray jacobian

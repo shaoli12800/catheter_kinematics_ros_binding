@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(catheter_prb_model)
+project(catheter_kinematics)
 
 # Configure CMake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -7,6 +7,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp roslib rospy std_msgs message_generation)
 find_package(MATLAB REQUIRED)
+find_package(rostest REQUIRED)
 
 # If Matlab is not found, raise error and quit
 if(NOT MATLAB_FOUND)
@@ -14,7 +15,7 @@ if(NOT MATLAB_FOUND)
 endif()
 
 # Declare ROS messages and services
-add_service_files(DIRECTORY srv FILES ForwardKinematics.srv)
+add_service_files(DIRECTORY srv FILES ForwardKinematics.srv Jacobian.srv)
 
 # Generate added messages and services
 generate_messages(DEPENDENCIES std_msgs)
@@ -26,10 +27,25 @@ catkin_package()
 include_directories(${catkin_INCLUDE_DIRS} ${Matlab_INCLUDE_DIRS})
 
 # Add executables
-add_executable(catheter_forward_kinematics_server src/forward_kinematics_server.cpp)
-target_link_libraries(catheter_forward_kinematics_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
-add_dependencies(catheter_forward_kinematics_server catheter_prb_model_gencpp)
+#add_executable(catheter_forward_kinematics_server src/forward_kinematics_server.cpp)
+#target_link_libraries(catheter_forward_kinematics_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+#add_dependencies(catheter_forward_kinematics_server catheter_kinematics_gencpp)
+#
+#add_executable(catheter_forward_kinematics_client src/forward_kinematics_client.cpp)
+#target_link_libraries(catheter_forward_kinematics_client ${catkin_LIBRARIES})
+#add_dependencies(catheter_forward_kinematics_client catheter_kinematics_gencpp)
+#
+#add_executable(catheter_free_space_jacobian_server src/free_space_jacobian_server.cpp)
+#target_link_libraries(catheter_free_space_jacobian_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+#add_dependencies(catheter_free_space_jacobian_server catheter_kinematics_gencpp)
+#
+#add_executable(catheter_free_space_jacobian_client src/free_space_jacobian_client.cpp)
+#target_link_libraries(catheter_free_space_jacobian_client ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+#add_dependencies(catheter_free_space_jacobian_client catheter_kinematics_gencpp)
 
-add_executable(catheter_forward_kinematics_client src/forward_kinematics_client.cpp)
-target_link_libraries(catheter_forward_kinematics_client ${catkin_LIBRARIES})
-add_dependencies(catheter_forward_kinematics_client catheter_prb_model_gencpp)
+add_executable(catheter_kinematics_server src/catheter_kinematics_server.cpp)
+target_link_libraries(catheter_kinematics_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+add_dependencies(catheter_kinematics_server catheter_kinematics_gencpp)
+
+# Add tests
+catkin_add_gtest(test_catheter_kinematics_server test/test_catheter_kinematics_server.cpp)

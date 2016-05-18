@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>catheter_prb_model</name>
+  <name>catheter_kinematics</name>
   <version>0.0.0</version>
-  <description>The catheter_prb_model package</description>
+  <description>The catheter_kinematics package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->

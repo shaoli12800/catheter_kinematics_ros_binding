@@ -2,18 +2,18 @@
 #include "ros/ros.h"
 #include "ros/package.h"
 #include "engine.h"
-#include "catheter_prb_model/ForwardKinematics.h"
+#include "catheter_kinematics/ForwardKinematics.h"
 
 engine *ep_;
 
-bool forward_kinematics(catheter_prb_model::ForwardKinematics::Request &request,
-                        catheter_prb_model::ForwardKinematics::Response &response) {
+bool forward_kinematics(catheter_kinematics::ForwardKinematics::Request &request,
+                        catheter_kinematics::ForwardKinematics::Response &response) {
     // Put control in Matlab workspace
-    mxArray *controlMxArray = mxCreateDoubleMatrix(request.control.size(), 1, mxREAL);
-    std::copy(request.control.begin(), request.control.end(), mxGetPr(controlMxArray));
-    engPutVariable(ep_, "control", controlMxArray);
+    mxArray *currentsMxArray = mxCreateDoubleMatrix(request.currents.size(), 1, mxREAL);
+    std::copy(request.currents.begin(), request.currents.end(), mxGetPr(currentsMxArray));
+    engPutVariable(ep_, "currents", currentsMxArray);
     // Calculate quasi-static configuration
-    engEvalString(ep_, "[jointAngles, dof] = quasistatic_conf(control)");
+    engEvalString(ep_, "[jointAngles, dof] = quasistatic_conf(currents)");
     // Get answer
     mxArray *dofMxArray = engGetVariable(ep_, "dof");
     mxArray *jointAnglesMxArray = engGetVariable(ep_, "jointAngles");
