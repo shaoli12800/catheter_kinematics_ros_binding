@@ -32,12 +32,7 @@ TEST_F(CatheterKinematicsTest, testForwardKinematicsCallback) {
     catheter_kinematics::ForwardKinematics srv;
     srv.request.currents = currents;
     catheter->forward_kinematics_callback(srv.request, srv.response);
-
-    std::cout << "joint_angles = ";
-    for (int i = 0; i < srv.response.joint_angles.size(); i++) {
-        std::cout << srv.response.joint_angles[i] << " ";
-    }
-    std::cout << std::endl;
+    ROS_INFO_STREAM(srv.response);
 }
 
 TEST_F(CatheterKinematicsTest, testFreeSpaceJacobianCallback) {
@@ -50,7 +45,7 @@ TEST_F(CatheterKinematicsTest, testFreeSpaceJacobianCallback) {
     srv.request.joint_angles = joint_angles;
     srv.request.currents = currents;
     catheter->free_space_jacobian_callback(srv.request, srv.response);
-    std::cout << "Finished" << std::endl;
+    ROS_INFO_STREAM(srv.response);
 }
 
 TEST_F(CatheterKinematicsTest, testJointPositionsCallback) {
@@ -60,13 +55,7 @@ TEST_F(CatheterKinematicsTest, testJointPositionsCallback) {
     catheter_kinematics::JointPositions srv;
     srv.request.joint_angles = joint_angles;
     catheter->joint_positions_callback(srv.request, srv.response);
-
-    std::cout << "joint positions = ";
-    for (int i = 0; i < srv.response.joint_positions.points.size(); i++) {
-        std::cout << "x, y, z = " << srv.response.joint_positions.points[i].x << " ";
-        std::cout << srv.response.joint_positions.points[i].y << " ";
-        std::cout << srv.response.joint_positions.points[i].z << std::endl;
-    }
+    ROS_INFO_STREAM(srv.response);
 }
 
 int main(int argc, char** argv) {
