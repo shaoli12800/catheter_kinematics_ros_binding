@@ -19,10 +19,7 @@ int main(int argc, char **argv) {
     std::copy(currents, currents + currents_size, std::back_inserter(srv.request.currents));
 
     if (client.call(srv)) {
-        ROS_INFO("Jacobian = ");
-        for (int i = 0; i < srv.response.jacobian.data.size(); i++) {
-            ROS_INFO("%f" , srv.response.jacobian.data[i]);
-        }
+        ROS_INFO_STREAM(srv.response);
     }
 
     else {

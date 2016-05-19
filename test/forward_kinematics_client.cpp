@@ -10,16 +10,11 @@ int main(int argc, char **argv) {
 
     // Put array in service
     catheter_kinematics::ForwardKinematics srv;
-    const int controlSize = 6;
-    double current[controlSize] = {1e-3, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3};  // For debugging
-
-    std::copy(current, current+controlSize, std::back_inserter(srv.request.currents));
+    const int controls_size = 6;
+    srv.request.currents.insert(srv.request.currents.end(), controls_size, 1e-3);
 
     if (client.call(srv)) {
-        ROS_INFO("Joint angles = ");
-        for (int i = 0; i < srv.response.joint_angles.size(); i++) {
-            ROS_INFO("%f" , srv.response.joint_angles[i]);
-        }
+        ROS_INFO_STREAM(srv.response);
     }
 
     else {

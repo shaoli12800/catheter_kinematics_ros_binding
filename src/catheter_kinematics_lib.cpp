@@ -11,7 +11,7 @@ CatheterKinematics::CatheterKinematics(ros::NodeHandle &node_handle) : node_hand
     free_space_jacobian_server_ = node_handle_.advertiseService("catheter_free_space_jacobian",
                                                                 &CatheterKinematics::free_space_jacobian_callback, this);
     joint_positions_server_ = node_handle_.advertiseService("catheter_joint_positions",
-                                                            &CatheterKinematics::free_space_jacobian_callback, this);
+                                                            &CatheterKinematics::joint_positions_callback, this);
     ROS_INFO("Services initialized");
     ROS_INFO("Initializing Matlab engine...");
     engine_pointer_ = engOpen("\0");
@@ -93,9 +93,9 @@ bool CatheterKinematics::free_space_jacobian_callback(catheter_kinematics::Jacob
 }
 
 bool CatheterKinematics::joint_positions_callback(catheter_kinematics::JointPositions::Request &request,
-                                                  catheter_kinematics::JointPositions::Response response) {
+                                                  catheter_kinematics::JointPositions::Response &response) {
     // Initialize dimensions
-    int dimension = 3;  // Too bad we're stuck here
+    int dimension = 3;  // Too bad we're stuck in a 3-D space
     int num_joints;  // We'll get this from the Matlab function
     // Pass information to Matlab and calculate joint positions
     mxArray *joint_angles_mx = mxCreateDoubleMatrix(request.joint_angles.size(), 1, mxREAL);

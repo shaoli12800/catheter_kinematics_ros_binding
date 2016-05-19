@@ -43,7 +43,7 @@ private:
 
     // Joint positions callback function
     bool joint_positions_callback(catheter_kinematics::JointPositions::Request &request,
-                                  catheter_kinematics::JointPositions::Response);
+                                  catheter_kinematics::JointPositions::Response &response);
 
     // ROS node handle
     ros::NodeHandle node_handle_;
