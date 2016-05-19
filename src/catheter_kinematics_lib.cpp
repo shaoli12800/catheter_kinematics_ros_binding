@@ -6,10 +6,12 @@
 
 CatheterKinematics::CatheterKinematics(ros::NodeHandle &node_handle) : node_handle_(node_handle) {
     ROS_INFO("Initializing services...");
-    forward_kinematics_ = node_handle_.advertiseService("catheter_forward_kinematics",
-                                                        &CatheterKinematics::forward_kinematics_callback, this);
-    free_space_jacobian_ = node_handle_.advertiseService("catheter_free_space_jacobian",
-                                                         &CatheterKinematics::free_space_jacobian_callback, this);
+    forward_kinematics_server_ = node_handle_.advertiseService("catheter_forward_kinematics",
+                                                               &CatheterKinematics::forward_kinematics_callback, this);
+    free_space_jacobian_server_ = node_handle_.advertiseService("catheter_free_space_jacobian",
+                                                                &CatheterKinematics::free_space_jacobian_callback, this);
+    joint_positions_server_ = node_handle_.advertiseService("catheter_joint_positions",
+                                                            &CatheterKinematics::free_space_jacobian_callback, this);
     ROS_INFO("Services initialized");
     ROS_INFO("Initializing Matlab engine...");
     engine_pointer_ = engOpen("\0");
@@ -27,7 +29,7 @@ void CatheterKinematics::forward_kinematics(const std::vector<float> &currents, 
     std::copy(currents.begin(), currents.end(), mxGetPr(currents_mx));
     engPutVariable(engine_pointer_, "currents", currents_mx);
     // Calculate quasi-static configuration
-    engEvalString(engine_pointer_, "[jointAngles, dof] = quasistatic_conf(currents)");
+    engEvalString(engine_pointer_, "[jointAngles, dof] = forward_kinematics_engine(currents)");
     // Get answer
     mxArray *dof_mx = engGetVariable(engine_pointer_, "dof");
     mxArray *joint_angles_mx = engGetVariable(engine_pointer_, "jointAngles");
@@ -54,7 +56,7 @@ void CatheterKinematics::free_space_jacobian(const std::vector<float> &joint_ang
     engPutVariable(engine_pointer_, "joint_angles", joint_angles_mx);
     engPutVariable(engine_pointer_, "currents", currents_mx);
     // Calculate Jacobian
-    engEvalString(engine_pointer_, "jacobian = free_space_jacobian(joint_angles, currents)");
+    engEvalString(engine_pointer_, "jacobian = free_space_jacobian_engine(joint_angles, currents)");
     // Read Jacobian from Matlab workspace
     mxArray* jacobian_mx = engGetVariable(engine_pointer_, "jacobian");
     jacobian.insert(jacobian.end(), mxGetPr(jacobian_mx), mxGetPr(jacobian_mx) + num_cols * num_rows);

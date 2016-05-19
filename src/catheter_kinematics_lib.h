@@ -49,10 +49,13 @@ private:
     ros::NodeHandle node_handle_;
 
     // Forward kinematics service
-    ros::ServiceServer forward_kinematics_;
+    ros::ServiceServer forward_kinematics_server_;
 
     // Free space Jacobian service
-    ros::ServiceServer free_space_jacobian_;
+    ros::ServiceServer free_space_jacobian_server_;
+
+    // Joint positions
+    ros::ServiceServer joint_positions_server_;
 
     // Matlab engine pointer
     engine* engine_pointer_;
