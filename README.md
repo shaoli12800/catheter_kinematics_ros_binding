@@ -1,4 +1,4 @@
-# catheter_kinematics_prb_model
+# catheter_kinematics
 Kinematics of Peudo-Rigid-Body model of the MRI catheter
 
 Setup:
