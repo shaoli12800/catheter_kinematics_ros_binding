@@ -5,7 +5,7 @@ project(catheter_kinematics)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp roslib rospy std_msgs message_generation)
+find_package(catkin REQUIRED COMPONENTS roscpp roslib rospy std_msgs geometry_msgs message_generation)
 find_package(MATLAB REQUIRED)
 find_package(rostest REQUIRED)
 
@@ -15,10 +15,10 @@ if(NOT MATLAB_FOUND)
 endif()
 
 # Declare ROS messages and services
-add_service_files(DIRECTORY srv FILES ForwardKinematics.srv Jacobian.srv)
+add_service_files(DIRECTORY srv FILES ForwardKinematics.srv Jacobian.srv JointPositions.srv)
 
 # Generate added messages and services
-generate_messages(DEPENDENCIES std_msgs)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 # Declare a catkin package
 catkin_package()
