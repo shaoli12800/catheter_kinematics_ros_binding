@@ -10,6 +10,7 @@
 #include <engine.h>
 #include <catheter_kinematics/ForwardKinematics.h>
 #include <catheter_kinematics/Jacobian.h>
+#include <gtest/gtest_prod.h>
 
 class CatheterKinematics {
 
@@ -39,6 +40,14 @@ private:
     ros::ServiceServer free_space_jacobian_;
 
     engine* engine_pointer_;
+
+    FRIEND_TEST(CatheterKinematicsTest, testForwardKinematics);
+
+    FRIEND_TEST(CatheterKinematicsTest, testFreeSpaceJacobian);
+
+    FRIEND_TEST(CatheterKinematicsTest, testForwardKinematicsCallback);
+
+    FRIEND_TEST(CatheterKinematicsTest, testFreeSpaceJacobianCallback);
 };
 
 #endif //CATHETER_KINEMATICS_CATHETER_KINEMATICS_H

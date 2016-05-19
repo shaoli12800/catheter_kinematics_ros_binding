@@ -30,22 +30,27 @@ include_directories(${catkin_INCLUDE_DIRS} ${Matlab_INCLUDE_DIRS})
 #add_executable(catheter_forward_kinematics_server src/forward_kinematics_server.cpp)
 #target_link_libraries(catheter_forward_kinematics_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
 #add_dependencies(catheter_forward_kinematics_server catheter_kinematics_gencpp)
-#
-#add_executable(catheter_forward_kinematics_client src/forward_kinematics_client.cpp)
-#target_link_libraries(catheter_forward_kinematics_client ${catkin_LIBRARIES})
-#add_dependencies(catheter_forward_kinematics_client catheter_kinematics_gencpp)
+
+add_executable(catheter_forward_kinematics_client test/forward_kinematics_client.cpp)
+target_link_libraries(catheter_forward_kinematics_client ${catkin_LIBRARIES})
+add_dependencies(catheter_forward_kinematics_client catheter_kinematics_gencpp)
 #
 #add_executable(catheter_free_space_jacobian_server src/free_space_jacobian_server.cpp)
 #target_link_libraries(catheter_free_space_jacobian_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
 #add_dependencies(catheter_free_space_jacobian_server catheter_kinematics_gencpp)
-#
-#add_executable(catheter_free_space_jacobian_client src/free_space_jacobian_client.cpp)
-#target_link_libraries(catheter_free_space_jacobian_client ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
-#add_dependencies(catheter_free_space_jacobian_client catheter_kinematics_gencpp)
+
+add_executable(catheter_free_space_jacobian_client test/free_space_jacobian_client.cpp)
+target_link_libraries(catheter_free_space_jacobian_client ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+add_dependencies(catheter_free_space_jacobian_client catheter_kinematics_gencpp)
+
+add_library(catheter_kinematics_lib src/catheter_kinematics_lib.cpp)
+target_link_libraries(catheter_kinematics_lib ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+add_dependencies(catheter_kinematics_lib catheter_kinematics_gencpp)
 
 add_executable(catheter_kinematics_server src/catheter_kinematics_server.cpp)
-target_link_libraries(catheter_kinematics_server ${catkin_LIBRARIES} ${MATLAB_LIBRARIES})
+target_link_libraries(catheter_kinematics_server ${catkin_LIBRARIES} catheter_kinematics_lib)
 add_dependencies(catheter_kinematics_server catheter_kinematics_gencpp)
 
 # Add tests
-catkin_add_gtest(test_catheter_kinematics_server test/test_catheter_kinematics_server.cpp)
+catkin_add_gtest(test_catheter_kinematics_lib test/test_catheter_kinematics_lib.cpp)
+target_link_libraries(test_catheter_kinematics_lib catheter_kinematics_lib)

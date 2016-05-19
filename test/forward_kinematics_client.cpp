@@ -17,8 +17,8 @@ int main(int argc, char **argv) {
 
     if (client.call(srv)) {
         ROS_INFO("Joint angles = ");
-        for (int i = 0; i < srv.response.jointAngles.size(); i++) {
-            ROS_INFO("%f" , srv.response.jointAngles[i]);
+        for (int i = 0; i < srv.response.joint_angles.size(); i++) {
+            ROS_INFO("%f" , srv.response.joint_angles[i]);
         }
     }
 
