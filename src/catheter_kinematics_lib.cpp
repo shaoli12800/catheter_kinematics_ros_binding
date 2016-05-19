@@ -92,5 +92,31 @@ bool CatheterKinematics::free_space_jacobian_callback(catheter_kinematics::Jacob
 
 bool CatheterKinematics::joint_positions_callback(catheter_kinematics::JointPositions::Request &request,
                                                   catheter_kinematics::JointPositions::Response response) {
+    // Initialize dimensions
+    int dimension = 3;  // Too bad we're stuck here
+    int num_joints;  // We'll get this from the Matlab function
+    // Pass information to Matlab and calculate joint positions
+    mxArray *joint_angles_mx = mxCreateDoubleMatrix(request.joint_angles.size(), 1, mxREAL);
+    std::copy(request.joint_angles.begin(), request.joint_angles.end(), mxGetPr(joint_angles_mx));
+    engPutVariable(engine_pointer_, "joint_angles", joint_angles_mx);
+    engEvalString(engine_pointer_, "[joint_positions, dimension, num_joints] = joint_positions_engine(joint_angles)");
+    mxArray* joint_positions_mx = engGetVariable(engine_pointer_, "joint_positions");
+    mxArray* num_joints_mx = engGetVariable(engine_pointer_, "num_joints");
+    // Get answer
+    num_joints = static_cast<int>(*reinterpret_cast<double*>(mxGetData(num_joints_mx)));
+    std::vector<float> joint_positions_vector;  // TODO: Put joint_position_mx in response without using vector
+    joint_positions_vector.insert(joint_positions_vector.end(), mxGetPr(joint_positions_mx), mxGetPr(joint_positions_mx)+dimension*num_joints);
+    response.joint_positions.points.resize(num_joints);
+    int id;
+    for (int i = 0; i < num_joints; i++) {
+        id = dimension * i;
+        response.joint_positions.points[i].x = joint_positions_vector[id];
+        response.joint_positions.points[i].y = joint_positions_vector[id+1];
+        response.joint_positions.points[i].z = joint_positions_vector[id+2];
+    }
+    // Destroy mxArrays
+    mxDestroyArray(joint_angles_mx);
+    mxDestroyArray(joint_positions_mx);
+    mxDestroyArray(num_joints_mx);
     return true;
 }

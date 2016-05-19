@@ -53,6 +53,22 @@ TEST_F(CatheterKinematicsTest, testFreeSpaceJacobianCallback) {
     std::cout << "Finished" << std::endl;
 }
 
+TEST_F(CatheterKinematicsTest, testJointPositionsCallback) {
+    // TODO: Test should not depend on the exact model of the catheter
+    unsigned int dof = 8;
+    std::vector<float> joint_angles(dof, 1e-3);
+    catheter_kinematics::JointPositions srv;
+    srv.request.joint_angles = joint_angles;
+    catheter->joint_positions_callback(srv.request, srv.response);
+
+    std::cout << "joint positions = ";
+    for (int i = 0; i < srv.response.joint_positions.points.size(); i++) {
+        std::cout << "x, y, z = " << srv.response.joint_positions.points[i].x << " ";
+        std::cout << srv.response.joint_positions.points[i].y << " ";
+        std::cout << srv.response.joint_positions.points[i].z << std::endl;
+    }
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     ros::init(argc, argv, "catheter_kinematics_tester");

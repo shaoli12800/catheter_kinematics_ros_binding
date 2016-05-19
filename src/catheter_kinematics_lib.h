@@ -60,6 +60,7 @@ private:
     // FRIEND_TEST allows gtest to access private member functions/variables during testing
     FRIEND_TEST(CatheterKinematicsTest, testForwardKinematicsCallback);
     FRIEND_TEST(CatheterKinematicsTest, testFreeSpaceJacobianCallback);
+    FRIEND_TEST(CatheterKinematicsTest, testJointPositionsCallback);
 };
 
 #endif //CATHETER_KINEMATICS_CATHETER_KINEMATICS_H
